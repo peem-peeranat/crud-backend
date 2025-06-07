@@ -23,22 +23,22 @@ const port = 8000;
 
 let connection = null;
 
-const db = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
-});
-
 const initMySQL = async () => {
-  connection = await mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    port: process.env.DB_PORT ? Number(process.env.DB_PORT) : 3306
-  });
-}
+  try {
+    connection = await mysql.createConnection({
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+      port: Number(process.env.DB_PORT)
+    });
+    console.log('✅ MySQL connected successfully!');
+  } catch (error) {
+    console.error('❌ Failed to connect to MySQL:', error);
+    throw error;
+  }
+};
+
 
 //สำหรับดึงข้อมูลผู้ใช้
 // ใช้ GET method เพื่อดึงข้อมูลผู้ใช้ทั้งหมด
